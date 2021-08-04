@@ -14,6 +14,8 @@ module.exports = {
         const sortFilterSelector = 'section div.app-components-Shopping-ResultSortFilter-styles__popupModalWrapper--1_70P';
         const sortByFieldSelector = 'select[class="atm-c-select atm-c-select-field__control"] option[value="ECONOMY"]';
         const applyFilterButtonSelector = 'div[class="atm-c-btn-group atm-c-btn-group--align-right"] button:nth-child(2)';
+
+        let flightObjectsArray = [];
         
         browser
             .url('https://www.united.com/')
@@ -42,14 +44,20 @@ module.exports = {
             .waitForElementVisible(flightResults, 3000)
             .elements('css selector', 'div[class^="app-components-Shopping-GridItem-styles__flightRow--"]', function(result){
                 result.value.map(function(element, err){
-                    browser.elementIdText(element.ELEMENT, async (result) => {
-                        const res = await result;
-                        // const arr = result.split('\n');
-                        
-                        console.log(res);
-                    })
+                   browser.elementIdText(element.ELEMENT, function(result) {
+                           let arr = result.value.split('\n');
+                           let flightObject = {
+                            'Depart' : arr[2],
+                            'Arrive' : arr[6] + ' ' + arr[7],
+                            'Stops' : arr[1],
+                            'Duration' : arr[10],
+                            'Price' : arr[36]
+                           }
+                           flightObjectsArray.push(flightObject);
+                   })
                 })
+            }).perform(function() {
+                console.log(flightObjectsArray);
             })
-        browser.saveScreenshot('tests_output/test.png')
     }
 }
