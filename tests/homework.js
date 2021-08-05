@@ -11,9 +11,9 @@ module.exports = {
             .selectDate('@departDateInput', 'Aug 20')
             .selectCabinType('@cabinType', '1')
             .submitSearch()
-            .waitForFlightResults('@flightResults', 3000)
+            .waitForFlightResults('@flightResults', 10000)
             .applySortFilter()
-            .waitForFlightResults('@flightResults', 3000)
+            .waitForFlightResults('@flightResults', 10000)
 
             browser.elements('css selector', 'div[class^="app-components-Shopping-GridItem-styles__flightRow--"]', function(result){
                 result.value.map(function(element, err){
